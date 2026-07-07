@@ -1,9 +1,15 @@
 <script setup>
-import { ref, watch, computed } from 'vue';
+import { ref, watch } from 'vue';
 import { useComputersStore } from '@/stores/mycomputers';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { PieChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent } from 'echarts/components';
 import VChart from 'vue-echarts';
+
+use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent]);
 
 const route = useRoute();
 const store2 = useComputersStore();

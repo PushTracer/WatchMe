@@ -15,14 +15,6 @@ export default defineConfig(({ mode }) => {
 	return {
 		build: {
 			chunkSizeWarningLimit: 2500,
-			rollupOptions: {
-				output: {
-					manualChunks: {
-						echarts: ["echarts"],
-						vuetify: ["vuetify"],
-					},
-				},
-			},
 		},
 		plugins,
 		base: "./",
