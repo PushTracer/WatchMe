@@ -1,11 +1,11 @@
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
 
 export const useDataStore = defineStore("data", () => {
 	const cloud = ref("未选中");
 	const monitorData = ref();
 
-	const params = reactive({
+	const params = ref({
 		tencentcloud: {
 			credential: {
 				secretId: "",
@@ -19,8 +19,7 @@ export const useDataStore = defineStore("data", () => {
 			},
 		},
 	});
-	//服务器
-	const server = reactive();
+	const server = ref(null);
 
 	function setInstanceMonitorData(data) {
 		monitorData.value = data;

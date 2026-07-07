@@ -68,19 +68,24 @@ const getClientConfig = () => {
 	return config.tencentcloud;
 };
 
-// 初始化客户端，只在模块加载时创建一次
-let clientConfig;
-let client;
-try {
-	clientConfig = getClientConfig();
-	client = clientConfig ? new LighthouseClient(clientConfig) : null;
-} catch (error) {
-	console.error(error.message);
-	client = null;
+// 惰性初始化客户端，避免模块加载时不必要的 I/O
+let clientCache = null;
+function getClient() {
+	if (!clientCache) {
+		try {
+			const cfg = getClientConfig();
+			clientCache = cfg ? new LighthouseClient(cfg) : null;
+		} catch (error) {
+			console.error(error.message);
+			clientCache = null;
+		}
+	}
+	return clientCache;
 }
 
 // 定义 clientUse 函数
 const clientUse = async () => {
+	const client = getClient();
 	if (!client) {
 		throw new Error("没有授权信息");
 	}
@@ -115,9 +120,8 @@ const updateConfig = (params) => {
 	try {
 		fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2));
 		console.log("配置文件更新成功");
-		// 更新客户端配置和客户端实例
-		clientConfig = getClientConfig();
-		client = clientConfig ? new LighthouseClient(clientConfig) : null;
+		// 清除客户端缓存，下次调用时重新创建
+		clientCache = null;
 	} catch (error) {
 		console.error("更新配置文件时出错:", error);
 		throw error;

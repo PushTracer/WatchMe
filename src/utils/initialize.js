@@ -13,8 +13,7 @@ async function getdata() {
 	// 从本地存储中获取计算机信息
 	const getComputers = JSON.parse(localStorage.getItem("computers"));
 	if (getComputers) {
-		// 将获取到的计算机信息赋值给 store 中的 computers
-		store.computers = getComputers;
+		store.computers.splice(0, store.computers.length, ...getComputers);
 		// 如果有计算机信息，将第一条信息赋值给当前选中的计算机
 		if (getComputers.length > 0) {
 			store.computerNow = getComputers[0];

@@ -7,22 +7,29 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import vueDevTools from "vite-plugin-vue-devtools";
 
 // https://vite.dev/config/
-export default defineConfig({
-	build: {
-		chunkSizeWarningLimit: 2500, // 将警告阈值提升到2.5MB
-	},
-	plugins: [
-		vue(),
-		vuetify({
-			autoImport: true, // 自动导入 Vuetify 组件和指令
-		}),
-		vueJsx(),
-		vueDevTools(),
-	],
-	base: "./", // 设置为相对路径
-	resolve: {
-		alias: {
-			"@": fileURLToPath(new URL("./src", import.meta.url)),
+export default defineConfig(({ mode }) => {
+	const plugins = [vue(), vuetify({ autoImport: true }), vueJsx()];
+	if (mode === "development") {
+		plugins.push(vueDevTools());
+	}
+	return {
+		build: {
+			chunkSizeWarningLimit: 2500,
+			rollupOptions: {
+				output: {
+					manualChunks: {
+						echarts: ["echarts"],
+						vuetify: ["vuetify"],
+					},
+				},
+			},
 		},
-	},
+		plugins,
+		base: "./",
+		resolve: {
+			alias: {
+				"@": fileURLToPath(new URL("./src", import.meta.url)),
+			},
+		},
+	};
 });

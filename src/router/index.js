@@ -1,9 +1,4 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import MotionView from "../views/MotionView.vue";
-import InfoView from "@/views/InfoView.vue";
-import ServerView from "@/views/ServerView.vue";
-import ServerMotionView from "@/views/ServerMotionView.vue";
 
 const router = createRouter({
 	history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -11,27 +6,27 @@ const router = createRouter({
 		{
 			path: "/",
 			name: "home",
-			component: HomeView,
+			component: () => import("../views/HomeView.vue"),
 		},
 		{
 			path: "/motion/:uuid",
 			name: "motion",
-			component: MotionView,
+			component: () => import("../views/MotionView.vue"),
 		},
 		{
 			path: "/info/:uuid",
 			name: "info",
-			component: InfoView,
+			component: () => import("@/views/InfoView.vue"),
 		},
 		{
 			path: "/server",
 			name: "server",
-			component: ServerView,
+			component: () => import("@/views/ServerView.vue"),
 		},
 		{
 			path: "/server/motion/:InstanceId",
 			name: "serverMotion",
-			component: ServerMotionView,
+			component: () => import("@/views/ServerMotionView.vue"),
 		},
 	],
 });

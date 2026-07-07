@@ -155,64 +155,38 @@ const si = require("systeminformation"); // 引入 systeminformation 模块来�
 
 async function getOsData(arg) {
 	try {
-		// 获取内存信息
-		const memoryInfo = await si.mem();
-		const totalMemory = Math.round(memoryInfo.total / 1048576);
-		const freeMemory = Math.round(memoryInfo.free / 1048576);
-		const usedMemory = Math.round(memoryInfo.used / 1048576);
-
-		// 获取 CPU 信息
-		const cpuInfo = await si.cpu();
-		const cpuManufacturer = cpuInfo.manufacturer;
-		const cpuBrand = cpuInfo.brand;
-		const cpuSpeed = cpuInfo.speed;
-		const cpuCores = cpuInfo.cores;
-		const cpuPhysicalCores = cpuInfo.physicalCores;
-
-		// 获取 CPU 占用率
-		const cpuLoad = await si.currentLoad();
-		const cpuUsage = Math.round(cpuLoad.currentLoad);
-
-		// 获取 GPU 信息
-		const gpuInfo = await si.graphics();
-		// console.log(gpuInfo);
-
-		// 获取网络信息
-		const networkInfo = await si.networkInterfaces();
-		const ip4 = networkInfo.map((info) => info.ip4);
-		const ip6 = networkInfo.map((info) => info.ip6);
-		const mac = networkInfo.map((info) => info.mac);
-
-		// 获取硬盘信息
-		const diskInfo = await si.diskLayout();
-		// 获取硬盘占用信息
-		const diskUsage = await si.fsSize();
-
-		// 获取系统信息
-		const systemInfo = await si.system();
-
+		const [memoryInfo, cpuInfo, cpuLoad, gpuInfo, networkInfo, diskInfo, diskUsage, systemInfo] = await Promise.all([
+			si.mem(),
+			si.cpu(),
+			si.currentLoad(),
+			si.graphics(),
+			si.networkInterfaces(),
+			si.diskLayout(),
+			si.fsSize(),
+			si.system(),
+		]);
 		logger.info("系统信息获取成功");
 		return {
 			memory: {
-				total: totalMemory,
-				free: freeMemory,
-				used: usedMemory,
+				total: Math.round(memoryInfo.total / 1048576),
+				free: Math.round(memoryInfo.free / 1048576),
+				used: Math.round(memoryInfo.used / 1048576),
 			},
 			cpu: {
-				manufacturer: cpuManufacturer,
-				brand: cpuBrand,
-				speed: cpuSpeed,
-				cores: cpuCores,
-				physicalCores: cpuPhysicalCores,
-				usage: cpuUsage,
+				manufacturer: cpuInfo.manufacturer,
+				brand: cpuInfo.brand,
+				speed: cpuInfo.speed,
+				cores: cpuInfo.cores,
+				physicalCores: cpuInfo.physicalCores,
+				usage: Math.round(cpuLoad.currentLoad),
 			},
 			gpu: {
 				models: gpuInfo,
 			},
 			network: {
-				ip4: ip4,
-				ip6: ip6,
-				mac: mac,
+				ip4: networkInfo.map((info) => info.ip4),
+				ip6: networkInfo.map((info) => info.ip6),
+				mac: networkInfo.map((info) => info.mac),
 			},
 			disk: {
 				diskinfo: diskInfo,

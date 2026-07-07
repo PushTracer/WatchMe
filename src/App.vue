@@ -49,9 +49,9 @@ onUnmounted(() => {
 @font-face {
   font-family: 'AlibabaPuHuiTi';
   /* 自定义字体名称 */
-  src: url('@/assets/fonts/AlibabaPuHuiTi-3-65-Medium.ttf') format('truetype'),
-    url('@/assets/fonts/AlibabaPuHuiTi-3-65-Medium.woff') format('truetype'),
-    url('@/assets/fonts/AlibabaPuHuiTi-3-65-Medium.woff2') format('woff2');
+  src: url('@/assets/fonts/AlibabaPuHuiTi-3-65-Medium.woff2') format('woff2'),
+    url('@/assets/fonts/AlibabaPuHuiTi-3-65-Medium.woff') format('woff'),
+    url('@/assets/fonts/AlibabaPuHuiTi-3-65-Medium.ttf') format('truetype');
 
   font-weight: normal;
   font-style: normal;

@@ -1,41 +1,24 @@
 <script setup>
-import { ref, watch, computed, nextTick } from 'vue';
+import { ref, watch } from 'vue';
 import { useComputersStore } from '@/stores/mycomputers';
-import { useSnackdataStore } from '@/stores/snackdata';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
 
 const route = useRoute();
 const store2 = useComputersStore();
-const store3 = useSnackdataStore();
 
-// 根据 uuid 获取对应的计算机信息
 const uuid = ref(route.params.uuid);
 
 onMounted(() => {
   store2.getCurrentComputer(uuid.value)
 });
 
-// 监听路由参数 uuid 的变化
 watch(() => route.params.uuid, (newUuid) => {
   uuid.value = newUuid;
   store2.getCurrentComputer(newUuid);
 });
-// 监听 store2.computerNow 的变化
-watch(() => store2.computerNow, async (newComputerNow, oldComputerNow) => {
-  // 使用 nextTick 确保 DOM 更新后执行回调
-  await nextTick(() => {
-    // 这里可以添加一些需要在 DOM 更新后执行的操作
 
-  });
-}, { deep: true });
-
-// 计算属性，将字节转换为 GB
-const convertToGB = computed(() => {
-  return (bytes) => {
-    return (bytes / (1024 * 1024 * 1024)).toFixed(2);
-  };
-});
+const convertToGB = (bytes) => (bytes / (1024 * 1024 * 1024)).toFixed(2);
 </script>
 
 <template>

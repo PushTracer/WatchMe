@@ -13,7 +13,7 @@ const store2 = useComputersStore();
 const store3 = useDataStore();
 const store4 = useSnackdataStore();
 
-const comboboxItems = ref([
+const comboboxItems = [
   'ap-bangkok',
   'ap-beijing',
   'ap-chengdu',
@@ -32,7 +32,7 @@ const comboboxItems = ref([
   'eu-frankfurt',
   'na-ashburn',
   'na-siliconvalley',
-  'sa-saopaulo']);
+  'sa-saopaulo'];
 async function handleSelect(name) {
   let message = await fetchTencentCloudUpdataConfig(store3.params);
   if (message != "更新成功") {
